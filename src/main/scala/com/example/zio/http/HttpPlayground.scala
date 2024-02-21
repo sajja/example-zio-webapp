@@ -1,9 +1,10 @@
 package com.example.zio.http
 
+import com.example.zio.di.service.zioservice.Tweet
 import io.circe._
 import io.circe.generic.semiauto._
 import io.circe.syntax._
-import zio.http.Version
+import zio.http.Header
 
 case class User(id: Int, firstName: String, lastName: String)
 

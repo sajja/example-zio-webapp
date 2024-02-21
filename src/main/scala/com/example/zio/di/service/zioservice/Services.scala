@@ -1,22 +1,26 @@
 package com.example.zio.di.service.zioservice
 
+
 case class Tweet(id: String, tweet: String)
+/*
+  R => Either[E,A]
+ */
 
 trait TweetService {
-  def getTweet(id: String): Either[Throwable, Tweet]
+  def getTweet(id: String): Tweet
 }
 
 trait TweetRepo {
-  def getTweet(id: String): Either[Throwable, Tweet]
+  def getTweet(id: String): Tweet
 }
 
 
 class TweetRepoImpl extends TweetRepo {
-  def getTweet(id: String): Either[Throwable, Tweet] = Right(Tweet("X","Y"))
+  def getTweet(id: String): Tweet = Tweet("X","Y")
 }
 
 class TweetServiceImpl(tweetRepo: TweetRepo) extends TweetService {
-  def getTweet(id: String): Either[Throwable, Tweet] = tweetRepo.getTweet(id)
+  def getTweet(id: String): Tweet = tweetRepo.getTweet(id)
 }
 
 
@@ -24,6 +28,7 @@ class TweetServiceImpl(tweetRepo: TweetRepo) extends TweetService {
 object TweetRepoImpl {
   def apply() = new TweetRepoImpl()
 }
+
 
 object TweetServiceImpl {
   def apply(tweetRepo: TweetRepo): TweetServiceImpl = new TweetServiceImpl(tweetRepo)
