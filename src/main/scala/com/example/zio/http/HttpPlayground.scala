@@ -32,16 +32,6 @@ object UserRestService {
   def getBooksByIsbn(id: String) = {
     books.filter(_.isbn == id).head.asJson
   }
-
-  //
-  //  def apply() = {
-  //    Http.collect[Request] {
-  //      case req@(Method.GET -> !! / "users") =>
-  //        Response.json("{}")
-  //    }
-  //  }
-  //}
-
 }
 
 import zio._
@@ -49,41 +39,10 @@ import zio.http._
 
 object HelloWorld extends ZIOAppDefault {
 
-  val app1: App[Any] =
-    Http.collect[Request] {
-      case Method.GET -> !! / "users" => {
-        Response.json(UserRestService.getAllUsers().asJson.toString())
-      }
-      case Method.GET -> !! / "books" => {
-        Response.json(UserRestService.getAllBooks().asJson.toString())
-      }
-      case Method.GET -> "" /: "books" /: isbn => {
-        Response.json(UserRestService.getBooksByIsbn(isbn.toString()).asJson.toString())
-      }
-    }
-
-  /**
-   * Always sucess handler
-   */
-  val app2 = Handler.succeed(Response.text("Always success handler")).toHttp
-
-  val app3 = Http.collect[Request] {
-    case Method.GET -> !! => Response.text("GET ")
-    case (Method.HEAD -> !!) => Response.text(s"HEAD")
-    case Version.`HTTP/1.1` -> !! =>
-      Response.text(s"VERSIOn")
-  }
-
-  val app4 = Http.collectZIO[Request] {
-    case Method.GET -> !! => {
-      val i = Random.nextIntBetween(10, 20)
-      i.map(n => Response.text(s"$n"))
-    }
-  }
-
-  val combineHandlers = app3 ++ app1
-
   override val run = {
-    Server.serve(app4).provide(Server.default)
+    for {
+      i <- ZIO.succeed(42)
+      _ <- Console.printLine(i)
+    } yield ()
   }
 }

@@ -36,6 +36,7 @@ object ZIOExamples extends zio.ZIOAppDefault {
   }
 
   def errorHand1 = {
+    val err:ZIO[Any,Exception,Nothing] = ZIO.fail(new Exception("Huston we have a problem"))
     val i = Console.readLine
     val j = i.flatMap((str: String) => ZIO.fromTry(Try(Integer.parseInt(str)))).catchAll(x => ZIO.fail(new IOException("dasfasjfdafafdafaf")))
     for {
